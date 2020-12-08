@@ -22,15 +22,11 @@ int* charToIntVet(char *vetor, int n);
 
 char* intToCharVet (int* vetor, int n);
 
-typedef struct {
-    int nome[MAX];
-	int tamanho;
-} VETOR;
 
 int main(int argc, char** argv) {
 	
 	
-	char arquivo[] = "C:/Users/natha/OneDrive/Documentos/4º ano - 2º semestre/Arquitetura/EP2/ArquivoTeste.txt";
+	char arquivo[] = "./ArquivoTeste.txt";
 //	char *texto = "3 8 1 0";
 //	writeFile(arquivo, texto);
 	
@@ -43,15 +39,18 @@ int main(int argc, char** argv) {
 	armazem = charToIntVet(retorno, tam);
 	int novoTam = tam - (tam/2);
 	printf("\n");
-	for (int i = 0; i < novoTam; i++) {
-		printf("%d ", armazem[i]);
-	}
+	
+//	ordenando int[]
+	ordena(novoTam, 1, armazem);
 		
-	ordena(tam, 0, armazem);
 	char* resposta = intToCharVet(armazem, tam);
+	for (int i = 0; i < novoTam; i++) {
+		printf("%c ", resposta[i]);
+	}
+	
 	writeFile(arquivo, resposta);
 //	readFile(arquivo);
-	
+//	
 	return 0;
 }
 
