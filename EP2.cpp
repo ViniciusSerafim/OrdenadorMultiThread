@@ -48,6 +48,11 @@ int main(int argc, char** argv) {
 		printf("%c ", resposta[i]);
 	}
 	
+	char* teste = "";
+
+	for(int i = 0; i < resposta.length; i++){
+		teste = teste + resposta[i];
+	}
 	writeFile(arquivo, resposta);
 //	readFile(arquivo);
 //	
@@ -144,8 +149,8 @@ char* readFile(char caminho[]) {
 
 bool writeFile(char caminho[], char mensagem[]) {
 	FILE *arq;
-	arq = fopen(caminho, "wt");  // Cria um arquivo texto para gravação
-	if (arq == NULL) // Se não conseguiu criar
+	arq = fopen(caminho, "wt");  // Cria um arquivo texto para gravaï¿½ï¿½o
+	if (arq == NULL) // Se nï¿½o conseguiu criar
 	{
    		printf("Problemas na CRIACAO do arquivo\n");
    		return false;
