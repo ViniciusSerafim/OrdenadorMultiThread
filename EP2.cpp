@@ -38,24 +38,39 @@ int main(int argc, char** argv) {
 	int *armazem;
 	armazem = charToIntVet(retorno, tam);
 	int novoTam = tam - (tam/2);
-	printf("\n");
 	
 //	ordenando int[]
-	ordena(novoTam, 1, armazem);
-		
-	char* resposta = intToCharVet(armazem, tam);
+	ordena(novoTam, 0, armazem);
+	printf("\n");
 	for (int i = 0; i < novoTam; i++) {
-		printf("%c ", resposta[i]);
+		printf("%d ", armazem[i]);
+	}
+	printf("\n");
+	
+//	PROBLEMINHAS:
+//	TAMANHO ERRADO
+//  NÚMEROS DE 2 DÍGITOS OU MAIS
+
+		
+	char *resposta = intToCharVet(armazem, novoTam);
+	
+	
+	char arquivoFinal[tam];
+	int j = 0;
+	for(int i = 0; i < tam; i++){
+		if (i%2 == 0) {
+			arquivoFinal[i] = resposta[j];
+			j++;
+		}
+		else {
+			arquivoFinal[i] = ' ';
+		}
 	}
 	
-	char* teste = "";
-
-	for(int i = 0; i < resposta.length; i++){
-		teste = teste + resposta[i];
-	}
-	writeFile(arquivo, resposta);
-//	readFile(arquivo);
-//	
+	printf("\n");
+	writeFile(arquivo, arquivoFinal);
+	readFile(arquivo);
+	
 	return 0;
 }
 
