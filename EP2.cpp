@@ -22,6 +22,8 @@ int* charToIntVet(char *vetor, int n);
 
 char* intToCharVet (int* vetor, int n);
 
+int contEspaco (char *vetor, int n);
+
 
 int main(int argc, char** argv) {
 	
@@ -33,43 +35,53 @@ int main(int argc, char** argv) {
 	char *retorno;
 	retorno = readFile(arquivo); // guardando string do arquivo
 	int tam = tamanhoArquivo(arquivo);
+	retorno[tam] = ' ';
+	tam++;
+	int espacos = contEspaco(retorno, tam);
+	int novoTam = espacos + 1;
 		
 //	alterando de string para int[]
+	printf("\n");
 	int *armazem;
 	armazem = charToIntVet(retorno, tam);
-	int novoTam = tam - (tam/2);
 	
-//	ordenando int[]
-	ordena(novoTam, 0, armazem);
 	printf("\n");
 	for (int i = 0; i < novoTam; i++) {
 		printf("%d ", armazem[i]);
 	}
-	printf("\n");
 	
-//	PROBLEMINHAS:
-//	TAMANHO ERRADO
-//  NÚMEROS DE 2 DÍGITOS OU MAIS
-
-		
-	char *resposta = intToCharVet(armazem, novoTam);
+//	
+////	ordenando int[]
+//	ordena(novoTam, 0, armazem);
+//	printf("\n");
+//	for (int i = 0; i < novoTam; i++) {
+//		printf("%d ", armazem[i]);
+//	}
+//	printf("\n");
+//	
+////	PROBLEMINHAS:
+////	TAMANHO ERRADO
+////  NÚMEROS DE 2 DÍGITOS OU MAIS
+//
+//		
+//	char *resposta = intToCharVet(armazem, novoTam);
 	
 	
-	char arquivoFinal[tam];
-	int j = 0;
-	for(int i = 0; i < tam; i++){
-		if (i%2 == 0) {
-			arquivoFinal[i] = resposta[j];
-			j++;
-		}
-		else {
-			arquivoFinal[i] = ' ';
-		}
-	}
-	
-	printf("\n");
-	writeFile(arquivo, arquivoFinal);
-	readFile(arquivo);
+//	char arquivoFinal[tam];
+//	int j = 0;
+//	for(int i = 0; i < tam; i++){
+//		if (i%2 == 0) {
+//			arquivoFinal[i] = resposta[j];
+//			j++;
+//		}
+//		else {
+//			arquivoFinal[i] = ' ';
+//		}
+//	}
+//	
+//	printf("\n");
+//	writeFile(arquivo, arquivoFinal);
+//	readFile(arquivo);
 	
 	return 0;
 }
@@ -108,8 +120,6 @@ int* charToIntVet(char *vetor, int n) {
 	        	int charPraInt = vetor[ij]-48;
 	        	int valorParcial = charPraInt * pot;
 	        	valorTotal = valorTotal + valorParcial;
-				// System.out.println(valorTotal);
-				// valorTotal += charPraInt * Math.pow(10, j);
 	        }
 		        
 	        array[tamanho] = valorTotal;
@@ -175,6 +185,16 @@ bool writeFile(char caminho[], char mensagem[]) {
 	if (result == EOF)
     	printf("Erro na Gravacao\n");
 	fclose(arq);
+}
+
+int contEspaco (char *vetor, int n) {
+	int cont = 0;
+	for (int i = 0; i < n; i++) {
+		if (vetor[i] == ' '){
+			cont++;
+		}
+	}
+	return cont;
 }
 
 
