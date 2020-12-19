@@ -22,7 +22,7 @@ int* charToIntVet(char *vetor, int n);
 
 char* intToCharVet (int* vetor, int n);
 
-int contEspaco (char *vetor, int n);
+int contEnter (char *vetor, int n);
 
 
 int main(int argc, char** argv) {
@@ -35,38 +35,31 @@ int main(int argc, char** argv) {
 	char *retorno;
 	retorno = readFile(arquivo); // guardando string do arquivo
 	int tam = tamanhoArquivo(arquivo);
-	retorno[tam] = ' ';
+	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
 	tam++;
-	int espacos = contEspaco(retorno, tam);
+	int espacos = contEnter(retorno, tam);
 	int novoTam = espacos + 1;
+	
 		
 //	alterando de string para int[]
 	printf("\n");
 	int *armazem;
 	armazem = charToIntVet(retorno, tam);
-	
-	printf("\n");
+	novoTam--;
+		
+
+//	ordenando int[]
+	ordena(novoTam, 1, armazem);
+	printf("\n\n");
 	for (int i = 0; i < novoTam; i++) {
 		printf("%d ", armazem[i]);
 	}
+	printf("\n");
 	
-//	
-////	ordenando int[]
-//	ordena(novoTam, 0, armazem);
-//	printf("\n");
-//	for (int i = 0; i < novoTam; i++) {
-//		printf("%d ", armazem[i]);
-//	}
-//	printf("\n");
-//	
-////	PROBLEMINHAS:
-////	TAMANHO ERRADO
-////  NÚMEROS DE 2 DÍGITOS OU MAIS
-//
-//		
+		
 //	char *resposta = intToCharVet(armazem, novoTam);
-	
-	
+//	
+//	
 //	char arquivoFinal[tam];
 //	int j = 0;
 //	for(int i = 0; i < tam; i++){
@@ -78,7 +71,7 @@ int main(int argc, char** argv) {
 //			arquivoFinal[i] = ' ';
 //		}
 //	}
-//	
+	
 //	printf("\n");
 //	writeFile(arquivo, arquivoFinal);
 //	readFile(arquivo);
@@ -86,7 +79,7 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-
+// Funções
 
 char* intToCharVet (int* vetor, int n) {
 	char resp[n];
@@ -105,7 +98,7 @@ int* charToIntVet(char *vetor, int n) {
 	for (int i = 0; i < n; i++) {
 	    numCasas++;
 		    
-	    if (vetor[i] == ' ') {
+	    if (vetor[i] == '\n') {
 	    	numCasas--;
 	        int valorTotal = 0;
 		        
@@ -187,10 +180,10 @@ bool writeFile(char caminho[], char mensagem[]) {
 	fclose(arq);
 }
 
-int contEspaco (char *vetor, int n) {
+int contEnter (char *vetor, int n) {
 	int cont = 0;
 	for (int i = 0; i < n; i++) {
-		if (vetor[i] == ' '){
+		if (vetor[i] == '\n'){
 			cont++;
 		}
 	}
