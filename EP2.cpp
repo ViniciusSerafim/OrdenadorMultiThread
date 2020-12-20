@@ -14,7 +14,7 @@ void selectionSort(int arr[], int n);
 
 char* readFile(char caminho[]);
 
-bool writeFile(char caminho[], char mensagem[]);
+bool writeFile(char caminho[], int mensagem[], int n);
 
 int tamanhoArquivo(char caminho[]);
 
@@ -50,31 +50,12 @@ int main(int argc, char** argv) {
 
 //	ordenando int[]
 	ordena(novoTam, 1, armazem);
+	
+//	Escreveno no arquivo e lendo arquivo
 	printf("\n\n");
-	for (int i = 0; i < novoTam; i++) {
-		printf("%d ", armazem[i]);
-	}
-	printf("\n");
-	
-		
-//	char *resposta = intToCharVet(armazem, novoTam);
-//	
-//	
-//	char arquivoFinal[tam];
-//	int j = 0;
-//	for(int i = 0; i < tam; i++){
-//		if (i%2 == 0) {
-//			arquivoFinal[i] = resposta[j];
-//			j++;
-//		}
-//		else {
-//			arquivoFinal[i] = ' ';
-//		}
-//	}
-	
-//	printf("\n");
-//	writeFile(arquivo, arquivoFinal);
-//	readFile(arquivo);
+	writeFile(arquivo, armazem, novoTam);
+	readFile(arquivo);
+
 	
 	return 0;
 }
@@ -84,9 +65,14 @@ int main(int argc, char** argv) {
 char* intToCharVet (int* vetor, int n) {
 	char resp[n];
 	for (int i = 0; i < n; i++) {
-		char ch = vetor[i] + 48;
-		resp[i] = ch;
+//		sprintf(resp, "%d", vetor[i]);
+		char ch = vetor[i];
+		resp[i] = ch + 48;
 	}
+	for (int i = 0; i < n; i++) {
+		printf("%c", resp[i]);
+	}
+	
 	return resp;
 }
 
@@ -165,7 +151,7 @@ char* readFile(char caminho[]) {
  	return elem;
 }
 
-bool writeFile(char caminho[], char mensagem[]) {
+bool writeFile(char caminho[], int mensagem[], int n) {
 	FILE *arq;
 	arq = fopen(caminho, "wt");  // Cria um arquivo texto para grava��o
 	if (arq == NULL) // Se n�o conseguiu criar
@@ -173,10 +159,15 @@ bool writeFile(char caminho[], char mensagem[]) {
    		printf("Problemas na CRIACAO do arquivo\n");
    		return false;
 	}
-
-	int result = fputs(mensagem, arq);
-	if (result == EOF)
-    	printf("Erro na Gravacao\n");
+	char str[n];
+	for (int i = 0; i < n; i++) {
+		sprintf(str, "%d", mensagem[i]);
+		int result = fputs(str, arq);
+		result = fputs("\n", arq);
+		if (result == EOF)
+    		printf("Erro na Gravacao\n");
+	}
+	
 	fclose(arq);
 }
 
