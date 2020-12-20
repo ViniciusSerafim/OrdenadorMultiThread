@@ -48,10 +48,14 @@ int main(int argc, char** argv) {
 	char *arquivo = nomes[2];
 //	char *texto = "3 8 1 0";
 //	writeFile(arquivo, texto);
-	
+//	printf("%c",arquivo[3]);
 	char *retorno;
 	retorno = readFile(arquivo); // guardando string do arquivo
-	printf("----------------------\n");	
+//	printf("%c%c%c%c%c",arquivo[0],arquivo[1],arquivo[2],arquivo[3],arquivo[18]);
+	printf("banana----------------------\n");	
+//	for(int i = 0;i<25;i++) 
+//		printf("%c",retorno[i]);
+	printf("banana----------------------\n");	
 	int tam = tamanhoArquivo(arquivo);
 	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
 	tam++;
@@ -92,9 +96,9 @@ char* intToCharVet (int* vetor, int n) {
 		char ch = vetor[i];
 		resp[i] = ch + 48;
 	}
-	for (int i = 0; i < n; i++) {
-		printf("%c", resp[i]);
-	}
+//	for (int i = 0; i < n; i++) {
+//		printf("%c", resp[i]);
+//	}
 	
 	return resp;
 }
@@ -169,7 +173,7 @@ char* readFile(char caminho[]) {
     		elem[n] = ch;
     		n++;
 			putchar(ch);
-			printf("%c",ch);
+//			printf("%c",ch);
 		}
  	fclose(arq);
  	return elem;
