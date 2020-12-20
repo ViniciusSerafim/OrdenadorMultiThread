@@ -69,10 +69,15 @@ int main(int argc, char** argv) {
 //		printf("%c\n",retorno[i]);
 //	printf("----------------------\n");
 //	ordenando int[]
+	for(int i=0; i<novoTam,i++)
+		
+		
+		
 	
-	ordena(novoTam, 1, armazem);
 	
-	ordena(novoTam, 2, armazem);
+		ordena(novoTam, 1, armazem);
+		
+		ordena(novoTam, 2, armazem);
 	
 	
 //	Escreveno no arquivo e lendo arquivo
