@@ -52,10 +52,7 @@ int main(int argc, char** argv) {
 	char *retorno;
 	retorno = readFile(arquivo); // guardando string do arquivo
 //	printf("%c%c%c%c%c",arquivo[0],arquivo[1],arquivo[2],arquivo[3],arquivo[18]);
-	printf("banana----------------------\n");	
-//	for(int i = 0;i<25;i++) 
 //		printf("%c",retorno[i]);
-	printf("banana----------------------\n");	
 	int tam = tamanhoArquivo(arquivo);
 	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
 	tam++;
@@ -80,8 +77,8 @@ int main(int argc, char** argv) {
 	
 //	Escreveno no arquivo e lendo arquivo
 	printf("\n\n");
-	writeFile(arquivo, armazem, novoTam);
-	readFile(arquivo);
+//	writeFile(arquivo, armazem, novoTam);
+//	readFile(arquivo);
 
 	
 	return 0;
@@ -164,16 +161,15 @@ char* readFile(char caminho[]) {
 	char elem[MAX];
 	int n = 0;
 	FILE *arq;
- 
  	arq = fopen(caminho, "r");
  	if(arq == NULL)
     	printf("Erro, nao foi possivel abrir o arquivo\n");
  	else
     	while( (ch=fgetc(arq))!= EOF ) {
+			printf("a-%c\n",ch);
     		elem[n] = ch;
     		n++;
-			putchar(ch);
-//			printf("%c",ch);
+//			putchar(ch);
 		}
  	fclose(arq);
  	return elem;
