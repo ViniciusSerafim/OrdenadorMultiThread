@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 32767
+#define MAX 500000
 
 int ordena(int tam, int tipo, int vetor[]);
 
@@ -27,29 +27,52 @@ int contEnter (char *vetor, int n);
 
 int main(int argc, char** argv) {
 	
+	char nomes[14][40] = {
+		"./arquivosep2/arq5.txt",
+		"./arquivosep2/arq10.txt",
+		"./arquivosep2/arq25.txt",
+		"./arquivosep2/arq50.txt",
+		"./arquivosep2/arq100.txt",
+		"./arquivosep2/arq250.txt",
+		"./arquivosep2/arq500.txt",
+		"./arquivosep2/arq1000.txt",
+		"./arquivosep2/arq10000.txt",
+		"./arquivosep2/arq25000.txt",
+		"./arquivosep2/arq50000.txt",
+		"./arquivosep2/arq100000.txt",
+		"./arquivosep2/arq1000000.txt",
+		"./arquivosep2/arq5000000.txt"
+	};
 	
-	char arquivo[] = "./ArquivoTeste.txt";
+//	char arquivo[] = "./arquivosep2/arq5000000.txt";
+	char *arquivo = nomes[2];
 //	char *texto = "3 8 1 0";
 //	writeFile(arquivo, texto);
 	
 	char *retorno;
 	retorno = readFile(arquivo); // guardando string do arquivo
+	printf("----------------------\n");	
 	int tam = tamanhoArquivo(arquivo);
 	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
 	tam++;
 	int espacos = contEnter(retorno, tam);
 	int novoTam = espacos + 1;
 	
-		
+	
 //	alterando de string para int[]
 	printf("\n");
 	int *armazem;
 	armazem = charToIntVet(retorno, tam);
 	novoTam--;
-		
-
+//	for(int i =0; i<30;i++)
+//		printf("%c\n",retorno[i]);
+//	printf("----------------------\n");
 //	ordenando int[]
+	
 	ordena(novoTam, 1, armazem);
+	
+	ordena(novoTam, 2, armazem);
+	
 	
 //	Escreveno no arquivo e lendo arquivo
 	printf("\n\n");
@@ -146,6 +169,7 @@ char* readFile(char caminho[]) {
     		elem[n] = ch;
     		n++;
 			putchar(ch);
+			printf("%c",ch);
 		}
  	fclose(arq);
  	return elem;
