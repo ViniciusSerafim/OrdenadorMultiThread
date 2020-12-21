@@ -6,6 +6,7 @@
 #include <math.h>
 #define MAX 500000
 void omp_set_num_threads(int num_threads);
+int omp_get_thread_num(void);
 
 double PCFreq = 0.0;
 __int64 CounterStart = 0;
@@ -35,7 +36,7 @@ void selectionSort(int arr[], int n);
 
 char* readFile(char caminho[]);
 
-void writeFile(char caminho[], int mensagem[], int n);
+int writeFile(char caminho[], int mensagem[], int n);
 
 int tamanhoArquivo(char caminho[]);
 
@@ -48,49 +49,92 @@ int contEnter (char *vetor, int n);
 
 int main(int argc, char** argv) {
 	
-	char nomes[14][40] = {
-		"./arquivosep2/arq5.txt",
-		"./arquivosep2/arq10.txt",
-		"./arquivosep2/arq25.txt",
-		"./arquivosep2/arq50.txt",
-		"./arquivosep2/arq100.txt",
-		"./arquivosep2/arq250.txt",
-		"./arquivosep2/arq500.txt",
-		"./arquivosep2/arq1000.txt",
-		"./arquivosep2/arq10000.txt",
-		"./arquivosep2/arq25000.txt",
-		"./arquivosep2/arq50000.txt",
-		"./arquivosep2/arq100000.txt",
-		"./arquivosep2/arq1000000.txt",
-		"./arquivosep2/arq5000000.txt"
-	};
 	
-	char *arquivo = nomes[2];
-	char *retorno;
-	retorno = readFile(arquivo); // guardando string do arquivo
-	int tam = tamanhoArquivo(arquivo);
-	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
-	tam++;
-	int espacos = contEnter(retorno, tam);
-	int novoTam = espacos + 1;
 	
-	int *armazem1;
-	int *armazem2;
-	armazem1 = charToIntVet(retorno, tam);
-	armazem2 = charToIntVet(retorno, tam);
-	novoTam--;
-
+//	char nomes[14][40] = {
+//		"./arquivosep2/arq5.txt",
+//		"./arquivosep2/arq10.txt",
+//		"./arquivosep2/arq25.txt",
+//		"./arquivosep2/arq50.txt",
+//		"./arquivosep2/arq100.txt",
+//		"./arquivosep2/arq250.txt",
+//		"./arquivosep2/arq500.txt",
+//		"./arquivosep2/arq1000.txt",
+//		"./arquivosep2/arq10000.txt",
+//		"./arquivosep2/arq25000.txt",
+//		"./arquivosep2/arq50000.txt",
+//		"./arquivosep2/arq100000.txt",
+//		"./arquivosep2/arq1000000.txt",
+//		"./arquivosep2/arq5000000.txt"
+//	};
+//	int numeroDeArquivos=14;
+//	int numeroDoArquivo;
+//	for (numeroDoArquivo=0; numeroDoArquivo < numeroDeArquivos;numeroDoArquivo++){
+//		char *arquivo = nomes[numeroDoArquivo];
+		char *arquivo[40];
+		int threads_num;
+		printf("digite o local do arquivo:  ");
+		fflush(stdout);
+		gets(arquivo);
+		fflush(stdout);
+		printf("digite o numero de threads para cada algoritmo ");
+		fflush(stdout);
+		scanf("%d",&threads_num);
+		fflush(stdout);
+		char *retorno;
+		retorno = readFile(arquivo); // guardando string do arquivo
+		int tam = tamanhoArquivo(arquivo);
+		retorno[tam] = ' '; // acrescentar espaço vazio no final da string
+		tam++;
+		int espacos = contEnter(retorno, tam);
+		int novoTam = espacos + 1;
 		
-	ordena(novoTam, 1, armazem);
+		int *armazem0;
 		
-	ordena(novoTam, 2, armazem);
+		
+		armazem0 = charToIntVet(retorno, tam);
+//		armazem1 = charToIntVet(retorno, tam);
+//		int armazemvec[2] = {armazem0,armazem1};
+		novoTam--;
+		char str[100];
+		float a;
+		float b = 10000000000000000; // para converter em milisegundos
+		omp_set_num_threads(threads_num);
+		
+		StartCounter()	;
+		#pragma omp parallel
+		{	
+		int i=0;
+		int armazem1[novoTam];
+		for(i=0;i<novoTam;i++){
+			
+			armazem1[i]=armazem0[i];
+		}
+		ordena(novoTam, omp_get_thread_num()%2, armazem1);	
+		}
+		a = GetCounter();
+		printf("%f \n",a/b);
+		
+		
+//		printf("%d  %f ",numeroDoArquivo,a/b);
+////		writeFile('ixi.csv',sprintf(str, "%d,%f,", numeroDoArquivo,a/b),15);
+//		StartCounter()	;
+//		ordena(novoTam, 1, armazem1);
+//		a = GetCounter();
+//		printf("%f ",a/b);
+//		free(armazem0);
+//		free(armazem1);
+//		writeFile('ixi.csv',sprintf(str, "%f\n", a/b),15)			
+//		writeFile();
+		
 	
-	
-//	Escreveno no arquivo e lendo arquivo
-//	writeFile(arquivo, armazem, novoTam);
-//	readFile(arquivo);
+		
+	//	Escreveno no arquivo e lendo arquivo
+		printf("\n");
+	//	writeFile(arquivo, armazem, novoTam);
+	//	readFile(arquivo);
 
-	
+//	}
 	return 0;
 }
 
@@ -98,14 +142,12 @@ int main(int argc, char** argv) {
 
 char* intToCharVet (int* vetor, int n) {
 	char resp[n];
-	for (int i = 0; i < n; i++) {
-//		sprintf(resp, "%d", vetor[i]);
+	int i;
+	for (i = 0; i < n; i++) {
 		char ch = vetor[i];
 		resp[i] = ch + 48;
 	}
-//	for (int i = 0; i < n; i++) {
-//		printf("%c", resp[i]);
-//	}
+
 	
 	return resp;
 }
@@ -114,17 +156,18 @@ int* charToIntVet(char *vetor, int n) {
 	int array[MAX];
 	int tamanho = 0;
 	int numCasas = 0;
-	for (int i = 0; i < n; i++) {
+	int i;
+	for ( i = 0; i < n; i++) {
 	    numCasas++;
 		    
 	    if (vetor[i] == '\n') {
 	    	numCasas--;
 	        int valorTotal = 0;
-		        
-	        for (int j = 1; j <= numCasas; j++) {
+		        int j;
+	        for (j = 1; j <= numCasas; j++) {
 		        	
-	        	int pot = 1;
-	        	for(int p = 0; p < j-1; p++){
+	        	int p,pot = 1;
+	        	for(p = 0; p < j-1; p++){
 	        		pot = pot * 10;
 	        	}
 		        	
@@ -173,7 +216,6 @@ char* readFile(char caminho[]) {
     	printf("Erro, nao foi possivel abrir o arquivo\n");
  	else
     	while( (ch=fgetc(arq))!= EOF ) {
-			printf("a-%c\n",ch);
     		elem[n] = ch;
     		n++;
 //			putchar(ch);
@@ -182,16 +224,17 @@ char* readFile(char caminho[]) {
  	return elem;
 }
 
-bool writeFile(char caminho[], int mensagem[], int n) {
+int writeFile(char caminho[], int mensagem[], int n) {
 	FILE *arq;
 	arq = fopen(caminho, "wt");  // Cria um arquivo texto para gravaï¿½ï¿½o
 	if (arq == NULL) // Se nï¿½o conseguiu criar
 	{
    		printf("Problemas na CRIACAO do arquivo\n");
-   		return false;
+   		return 1;
 	}
 	char str[n];
-	for (int i = 0; i < n; i++) {
+	int i;
+	for ( i = 0; i < n; i++) {
 		sprintf(str, "%d", mensagem[i]);
 		int result = fputs(str, arq);
 		result = fputs("\n", arq);
@@ -204,7 +247,8 @@ bool writeFile(char caminho[], int mensagem[], int n) {
 
 int contEnter (char *vetor, int n) {
 	int cont = 0;
-	for (int i = 0; i < n; i++) {
+	int i;
+	for (i = 0; i < n; i++) {
 		if (vetor[i] == '\n'){
 			cont++;
 		}
@@ -223,8 +267,12 @@ int ordena(int tam, int tipo, int vetor[]) {
 	return tam;
 } 
 
+
+
+
+
 // SelectioSort
-void swap(int *xp, int *yp){ 
+void swap(int *xp, int *yp) { 
     int temp = *xp; 
     *xp = *yp; 
     *yp = temp; 
@@ -278,3 +326,5 @@ void quickSort(int *a, int left, int right) {
         quickSort(a, i, right);
     }
 }
+
+
