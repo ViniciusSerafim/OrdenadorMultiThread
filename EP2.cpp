@@ -1,8 +1,16 @@
-#include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+#include <windows.h>
 #define MAX 500000
+
+double PCFreq = 0.0;
+__int64 CounterStart = 0;
+
+void StartCounter();
+
+double GetCounter();
 
 int ordena(int tam, int tipo, int vetor[]);
 
@@ -43,49 +51,49 @@ int main(int argc, char** argv) {
 		"./arquivosep2/arq1000000.txt",
 		"./arquivosep2/arq5000000.txt"
 	};
-	
-//	char arquivo[] = "./arquivosep2/arq5000000.txt";
-	char *arquivo = nomes[2];
-//	char *texto = "3 8 1 0";
-//	writeFile(arquivo, texto);
-//	printf("%c",arquivo[3]);
-	char *retorno;
-	retorno = readFile(arquivo); // guardando string do arquivo
-//	printf("%c%c%c%c%c",arquivo[0],arquivo[1],arquivo[2],arquivo[3],arquivo[18]);
-//		printf("%c",retorno[i]);
-	int tam = tamanhoArquivo(arquivo);
-	retorno[tam] = ' '; // acrescentar espaço vazio no final da string
-	tam++;
-	int espacos = contEnter(retorno, tam);
-	int novoTam = espacos + 1;
-	
-	
-//	alterando de string para int[]
-	printf("\n");
-	int *armazem;
-	armazem = charToIntVet(retorno, tam);
-	novoTam--;
-//	for(int i =0; i<30;i++)
-//		printf("%c\n",retorno[i]);
-//	printf("----------------------\n");
-//	ordenando int[]
-	for(int i=0; i<novoTam,i++)
-		
-		
-		
-	
-	
-		ordena(novoTam, 1, armazem);
-		
-		ordena(novoTam, 2, armazem);
-	
-	
-//	Escreveno no arquivo e lendo arquivo
-	printf("\n\n");
-//	writeFile(arquivo, armazem, novoTam);
-//	readFile(arquivo);
+	int numeroDeArquivos=14;
+	int numeroDoArquivo;
+	for (numeroDoArquivo=0; numeroDoArquivo < numeroDeArquivos;numeroDoArquivo++){
 
+		char *arquivo = nomes[numeroDoArquivo];
+		char *retorno;
+		retorno = readFile(arquivo); // guardando string do arquivo
+		int tam = tamanhoArquivo(arquivo);
+		retorno[tam] = ' '; // acrescentar espaço vazio no final da string
+		tam++;
+		int espacos = contEnter(retorno, tam);
+		int novoTam = espacos + 1;
+		
+		int *armazem0;
+		int *armazem1;
+		armazem0 = charToIntVet(retorno, tam);
+		armazem1 = charToIntVet(retorno, tam);
+		novoTam--;
+		char str[100];
+		float a;
+		float b = 10000000000000000; // para converter em milisegundos
+		StartCounter()	;
+		ordena(novoTam, 0, armazem0);
+		a = GetCounter();
+		printf("%d  %f ",numeroDoArquivo,a/b);
+//		writeFile('ixi.csv',sprintf(str, "%d,%f,", numeroDoArquivo,a/b),15);
+		StartCounter()	;
+		ordena(novoTam, 1, armazem1);
+		a = GetCounter();
+		printf("%f ",a/b);
+//		free(armazem0);
+//		free(armazem1);
+//		writeFile('ixi.csv',sprintf(str, "%f\n", a/b),15)			
+//		writeFile();
+		
 	
+		
+	//	Escreveno no arquivo e lendo arquivo
+		printf("\n");
+	//	writeFile(arquivo, armazem, novoTam);
+	//	readFile(arquivo);
+
+	}
 	return 0;
 }
 
@@ -94,17 +102,13 @@ int main(int argc, char** argv) {
 char* intToCharVet (int* vetor, int n) {
 	char resp[n];
 	for (int i = 0; i < n; i++) {
-//		sprintf(resp, "%d", vetor[i]);
 		char ch = vetor[i];
 		resp[i] = ch + 48;
 	}
-//	for (int i = 0; i < n; i++) {
-//		printf("%c", resp[i]);
-//	}
+
 	
 	return resp;
 }
-
 
 int* charToIntVet(char *vetor, int n) {
 	int array[MAX];
@@ -159,8 +163,6 @@ int tamanhoArquivo(char caminho[]) {
  	return n;
 }
 
-
-
 char* readFile(char caminho[]) {
 	char ch;
 	char elem[MAX];
@@ -171,7 +173,6 @@ char* readFile(char caminho[]) {
     	printf("Erro, nao foi possivel abrir o arquivo\n");
  	else
     	while( (ch=fgetc(arq))!= EOF ) {
-			printf("a-%c\n",ch);
     		elem[n] = ch;
     		n++;
 //			putchar(ch);
@@ -210,7 +211,6 @@ int contEnter (char *vetor, int n) {
 	return cont;
 }
 
-
 // tipo = 0   -->  selectionSort
 // tipo = 1   -->  quickSort
 int ordena(int tam, int tipo, int vetor[]) {
@@ -225,16 +225,15 @@ int ordena(int tam, int tipo, int vetor[]) {
 
 
 
+
 // SelectioSort
-void swap(int *xp, int *yp) 
-{ 
+void swap(int *xp, int *yp) { 
     int temp = *xp; 
     *xp = *yp; 
     *yp = temp; 
 } 
 
-void selectionSort(int arr[], int n) 
-{ 
+void selectionSort(int arr[], int n){ 
     int i, j, min_idx; 
 
     // One by one move boundary of unsorted subarray 
@@ -250,8 +249,6 @@ void selectionSort(int arr[], int n)
         swap(&arr[min_idx], &arr[i]); 
     } 
 }
-
-
 
 // Quick sort function
 void quickSort(int *a, int left, int right) {
@@ -284,3 +281,19 @@ void quickSort(int *a, int left, int right) {
         quickSort(a, i, right);
     }
 }
+
+void StartCounter(){
+    LARGE_INTEGER li;
+    if(!QueryPerformanceFrequency(&li))
+    printf("QueryPerformanceFrequency failed!\n");
+    PCFreq = (double)(li.QuadPart)/10000000000000000000.0;
+    QueryPerformanceCounter(&li);
+    CounterStart = li.QuadPart;
+}
+
+double GetCounter(){
+    LARGE_INTEGER li;
+    QueryPerformanceCounter(&li);
+    return (double)(li.QuadPart-CounterStart)/PCFreq;
+}
+
